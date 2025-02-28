@@ -1,0 +1,49 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class TaskManager {
+    public static void main(String[] args) {
+        List<String> tasks = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        
+        tasks.add("Comprar mantimentos");
+        tasks.add("Estudar Java");
+        tasks.add("Fazer exercícios");
+        
+        while (true) {
+            System.out.println("\nTarefas:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + ". " + tasks.get(i));
+            }
+            
+            System.out.println("\nEscolha uma opção:");
+            System.out.println("1 - Adicionar Tarefa");
+            System.out.println("2 - Remover Tarefa");
+            System.out.println("3 - Sair");
+            
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+            
+            if (choice == 1) {
+                System.out.print("Digite a nova tarefa: ");
+                String newTask = scanner.nextLine();
+                tasks.add(newTask);
+            } else if (choice == 2) {
+                System.out.print("Digite o número da tarefa para remover: ");
+                int taskNumber = scanner.nextInt();
+                if (taskNumber > 0 && taskNumber <= tasks.size()) {
+                    tasks.remove(taskNumber - 1);
+                } else {
+                    System.out.println("Número inválido!");
+                }
+            } else if (choice == 3) {
+                break;
+            } else {
+                System.out.println("Opção inválida!");
+            }
+        }
+        
+        scanner.close();
+    }
+}
