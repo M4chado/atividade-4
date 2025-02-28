@@ -1,0 +1,72 @@
+import java.io.*;
+import java.util.*;
+
+public class TaskManager {
+    private static final String FILE_NAME = "tasks.csv";
+
+    public static void main(String[] args) {
+        List<String> tasks = loadTasksFromFile();
+        Scanner scanner = new Scanner(System.in);
+        
+        while (true) {
+            System.out.println("\nTarefas:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + ". " + tasks.get(i));
+            }
+            
+            System.out.println("\nEscolha uma opção:");
+            System.out.println("1 - Adicionar Tarefa");
+            System.out.println("2 - Remover Tarefa");
+            System.out.println("3 - Sair");
+            
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consumir a nova linha
+            
+            if (choice == 1) {
+                System.out.print("Digite a nova tarefa: ");
+                String newTask = scanner.nextLine();
+                tasks.add(newTask);
+                saveTasksToFile(tasks);
+            } else if (choice == 2) {
+                System.out.print("Digite o número da tarefa para remover: ");
+                int taskNumber = scanner.nextInt();
+                if (taskNumber > 0 && taskNumber <= tasks.size()) {
+                    tasks.remove(taskNumber - 1);
+                    saveTasksToFile(tasks);
+                } else {
+                    System.out.println("Número inválido!");
+                }
+            } else if (choice == 3) {
+                break;
+            } else {
+                System.out.println("Opção inválida!");
+            }
+        }
+        
+        scanner.close();
+    }
+
+    private static List<String> loadTasksFromFile() {
+        List<String> tasks = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                tasks.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Nenhum arquivo encontrado. Criando um novo...");
+        }
+        return tasks;
+    }
+
+    private static void saveTasksToFile(List<String> tasks) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (String task : tasks) {
+                bw.write(task);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar tarefas.");
+        }
+    }
+}
